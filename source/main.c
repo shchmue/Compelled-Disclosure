@@ -25,8 +25,9 @@ void loopInput()
     }
 }
 
-#define NS_TITLE_ID 0x010000000000001F
-#define VMDB_SAVE_ID 0x8000000000000045
+#define ES_TITLE_ID 0x0100000000000033
+#define ES_COMMON_SAVE_ID 0x80000000000000E1
+#define ES_PERSONALIZED_SAVE_ID 0x80000000000000E2
 
 int main(int argc, char **argv)
 {
@@ -41,11 +42,12 @@ int main(int argc, char **argv)
         goto loop_input;
     }
 
-    //printf("Backing up vmdb save data...\n");
-    //backupSystemSavedata(NS_TITLE_ID, VMDB_SAVE_ID);
-    printf("Restoring vmdb save data...\n");
-    restoreSystemSavedata(NS_TITLE_ID, VMDB_SAVE_ID);
-    fsdevUnmountDevice("save");
+    printf("Backing up es common save data...\n");
+    backupSystemSavedata(ES_TITLE_ID, ES_COMMON_SAVE_ID);
+    fsdevUnmountDevice("s4ve");
+    printf("Backing up es personalized save data...\n");
+    backupSystemSavedata(ES_TITLE_ID, ES_PERSONALIZED_SAVE_ID);
+    fsdevUnmountDevice("s4ve");
 
     loop_input:
     loopInput();

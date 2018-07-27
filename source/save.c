@@ -26,7 +26,7 @@ Result openSystemSavedata(u64 titleId, u64 saveId)
         return rc;
     }
 
-    if (fsdevMountDevice("save", g_activeFs) == -1) 
+    if (fsdevMountDevice("s4ve", g_activeFs) == -1) 
     {
         printf("Failed to mount system save data device.\n");
         return -1;
@@ -55,7 +55,7 @@ Result backupSystemSavedata(u64 titleId, u64 saveId)
     }
 
     char outPath[FS_MAX_PATH];
-    snprintf(outPath, FS_MAX_PATH, "/switch/compelled_disclosure/%016lx/", titleId);
+    snprintf(outPath, FS_MAX_PATH, "/switch/compelled_disclosure/%016lx/", saveId);
 
     if (R_FAILED(rc = removeDir(outPath)))
     {
@@ -70,9 +70,9 @@ Result backupSystemSavedata(u64 titleId, u64 saveId)
     }
 
     // Begin copying files
-    if (R_FAILED(rc = copyDir("save:/", outPath)))
+    if (R_FAILED(rc = copyDir("s4ve:/", outPath)))
     {
-        printf("Failed to copy save:/ to out path %s\n", outPath);
+        printf("Failed to copy s4ve:/ to out path %s\n", outPath);
         return rc;
     }
 
