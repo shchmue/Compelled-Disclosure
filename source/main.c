@@ -29,6 +29,9 @@ void loopInput()
 #define ES_COMMON_SAVE_ID 0x80000000000000E1
 #define ES_PERSONALIZED_SAVE_ID 0x80000000000000E2
 
+#define NS_TITLE_ID 0x010000000000001F
+#define NS_APPMAN_SAVE_ID 0x8000000000000043
+
 int main(int argc, char **argv)
 {
     Result rc;
@@ -47,6 +50,9 @@ int main(int argc, char **argv)
     fsdevUnmountDevice("s4ve");
     printf("Backing up es personalized save data...\n");
     backupSystemSavedata(ES_TITLE_ID, ES_PERSONALIZED_SAVE_ID);
+    fsdevUnmountDevice("s4ve");
+    printf("Backing up ns_appman save data...\n");
+    backupSystemSavedata(NS_TITLE_ID, NS_APPMAN_SAVE_ID);
     fsdevUnmountDevice("s4ve");
 
     loop_input:
