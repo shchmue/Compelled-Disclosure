@@ -54,6 +54,8 @@ int main(int argc, char **argv)
     printf("Backing up ns_appman save data...\n");
     backupSystemSavedata(NS_TITLE_ID, NS_APPMAN_SAVE_ID);
     fsdevUnmountDevice("s4ve");
+    printf("Backing up SD seed...\n");
+    backupSDSeed(NS_APPMAN_SAVE_ID);
 
     loop_input:
     loopInput();

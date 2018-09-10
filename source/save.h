@@ -4,3 +4,4 @@
 
 Result backupSystemSavedata(u64 titleId, u64 saveId);
 Result restoreSystemSavedata(u64 titleId, u64 saveId);
+Result backupSDSeed(u64 saveId);

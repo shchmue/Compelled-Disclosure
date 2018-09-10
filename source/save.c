@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include "io.h"
 
+#define SEED_LEN 0x10
+
 static FsFileSystem g_activeFs;
 
 Result openSystemSavedata(u64 titleId, u64 saveId)
@@ -105,6 +107,50 @@ Result restoreSystemSavedata(u64 titleId, u64 saveId)
         printf("Failed to copy save:/ to out path %s\n", outPath);
         return rc;
     }
+
+    return rc;
+}
+
+Result backupSDSeed(u64 saveId)
+{
+    Result rc;
+
+    FILE *src;
+    FILE *dst;
+
+    char srcPath[FS_MAX_PATH];
+    snprintf(srcPath, FS_MAX_PATH, "/switch/compelled_disclosure/%016lx/private", saveId);
+
+    char dstPath[FS_MAX_PATH];
+    snprintf(dstPath, FS_MAX_PATH, "/switch/compelled_disclosure/sdseed.txt");
+    
+    if (!(src = fopen(srcPath, "rb")))
+    {
+        printf("Failed to open file %s\n", srcPath);
+        return 1;
+    }
+
+    if (!(dst = fopen(dstPath, "w")))
+    {
+        printf("Failed to open file %s\n", dstPath);
+        fclose(src);
+        return 1;
+    }
+
+    u8 seed[SEED_LEN];
+
+    fseek(src, 0x10, SEEK_SET);
+    fread(seed, 1, SEED_LEN, src);
+
+    char hex[3];
+    for (int i = 0; i < SEED_LEN; i++)
+    {
+        sprintf(hex, "%02x", seed[i]);
+        fwrite(hex, 2, 1, dst);
+    }
+
+    fclose(src);
+    fclose(dst);
 
     return rc;
 }
